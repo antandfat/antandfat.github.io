@@ -1,0 +1,492 @@
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Te amo Fati mi michito!!</title>
+<style>
+    body {
+  background: #ffe4e1;
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden; /* ✅ evita scroll lateral */
+  overflow-y: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+  h1 {
+    position: relative;
+    color: #d6336c;
+    font-size: 3rem;
+    text-align: center;
+    text-shadow: 2px 2px 5px #a8325a;
+    z-index: 10;
+    user-select: none;
+    margin-top: 20px;
+  }
+
+  /* Imagen que cambia */
+  .photo-wrapper {
+    position: relative;
+    width: 350px;
+    height: 350px;
+    margin-top: 10px;
+    display: none; /* Oculto al inicio */
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+  }
+  .photo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    transition: opacity 0.4s ease;
+    opacity: 1;
+  }
+
+  /* Botones blancos con glow animado */
+  .btn-left, .btn-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    color: #fff; /* blanco base */
+    cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    text-shadow: none;
+    user-select: none;
+    /* Para evitar seleccionar texto al tocar */
+  }
+  .btn-left:hover, .btn-right:hover {
+    color: #eee;
+  }
+  .btn-left {
+    left: -40px;
+  }
+  .btn-right {
+    right: -40px;
+  }
+
+  /* Glow animation */
+  @keyframes glow {
+    0%, 100% {
+      text-shadow:
+        0 0 5px white,
+        0 0 10px white,
+        0 0 15px #ff85a2,
+        0 0 20px #ff85a2,
+        0 0 30px #ff85a2;
+    }
+    50% {
+      text-shadow:
+        0 0 15px white,
+        0 0 30px white,
+        0 0 45px #ff3e6a,
+        0 0 60px #ff3e6a,
+        0 0 75px #ff3e6a;
+    }
+  }
+  .btn-left.glow,
+  .btn-right.glow {
+    animation: glow 1.8s ease-in-out infinite;
+  }
+
+  /* Animación sacudida para foto */
+  @keyframes shakePhoto {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px) rotate(-2deg); }
+    50% { transform: translateX(5px) rotate(2deg); }
+    75% { transform: translateX(-3px) rotate(-1deg); }
+    100% { transform: translateX(0) rotate(0); }
+  }
+  .shake {
+    animation: shakePhoto 1s ease;
+  }
+
+  /* Gato izquierda fijo */
+  .cat-left {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    width: 250px;
+    z-index: 5;
+    user-select: none;
+  }
+
+  /* Gato caminando animado */
+ .bouncy-cat {
+  position: fixed; /* antes era absolute */
+  bottom: 5px;
+  left: 0;
+  width: 350px;
+  animation: bounceMove 25s ease-in-out infinite;
+  z-index: 2;
+  user-select: none;
+  display: none;
+  pointer-events: none; /* Para que no interrumpa clics */
+}
+  .bouncy-cat img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+@keyframes bounceMove {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(120vw); }
+}
+
+
+
+  /* Emoji lluvia */
+  .emoji-container {
+    pointer-events: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    overflow: visible;
+    z-index: 1;
+  }
+  .emoji {
+    position: absolute;
+    font-size: 2rem;
+    user-select: none;
+    will-change: transform;
+  }
+
+  /* Explosión */
+  .explosion {
+    position: fixed;
+    top: 50%; left: 50%;
+    width: 100px; height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff8, #ff85a2);
+    z-index: 100;
+    animation: boom 1s ease-out forwards;
+  }
+  .explosion-emojis {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    z-index: 101;
+    animation: fadeOut 1s ease-out forwards;
+    user-select: none;
+  }
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+  }
+  @keyframes boom {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(10); opacity: 0; }
+  }
+
+  /* Botón gato inferior derecho */
+  .cat-button {
+    position: fixed;
+    bottom: 10px;
+    right: 5px;
+    transform: rotate(-45deg);
+    width: 280px;
+    z-index: 20;
+    cursor: pointer;
+    animation: shake 2s infinite ease-in-out;
+    user-select: none;
+  }
+  @keyframes shake {
+    0% { transform: rotate(-45deg); }
+    25% { transform: rotate(-43deg); }
+    50% { transform: rotate(-47deg); }
+    75% { transform: rotate(-43deg); }
+    100% { transform: rotate(-45deg); }
+  }
+
+  /* Mensaje "aprieta al michito" arriba del gato */
+  .mensaje-fijo {
+    position: fixed;
+    bottom: 320px;
+    right: 130px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    color: #a8325a;
+    font-weight: bold;
+    z-index: 21;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    user-select: none;
+    max-width: 180px;
+    text-align: center;
+  }
+
+  /* Mensajes aleatorios flotantes */
+  .mensaje {
+    position: absolute;
+    background: #fff5;
+    color: #d6336c;
+    font-size: 1.5rem;
+    padding: 5px 15px;
+    border-radius: 20px;
+    animation: flotar 2s ease-out forwards;
+    z-index: 20;
+    user-select: none;
+  }
+  @keyframes flotar {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-80px); }
+  }
+
+  /* Media queries para móvil */
+ @media (max-width: 768px) {
+  h1 {
+    font-size: 1.7rem;
+    margin-top: 15px;
+    padding: 0 10px;
+  }
+  .photo-wrapper {
+    width: 90vw;
+    height: auto;
+    flex-direction: column;
+    margin: 10px auto;
+  }
+  .btn-left,
+  .btn-right {
+    font-size: 2rem;
+    top: 45%;
+  }
+  .btn-left {
+    left: -10px;
+  }
+  .btn-right {
+    right: -10px;
+  }
+  .cat-left {
+    width: 120px;
+    left: 0;
+    bottom: 0;
+  }
+  .bouncy-cat {
+    width: 350px;
+    bottom: 5px;
+  }
+  .cat-button {
+    width: 150px;
+    right: 10px;
+    bottom: 10px;
+  }
+  .mensaje-fijo {
+    bottom: 180px;
+    right: 50%;
+    transform: translateX(50%);
+    font-size: 0.9rem;
+    max-width: 120px;
+  }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- Texto principal -->
+  <h1>TE AMO FATI MI MICHITO!!</h1>
+
+  <!-- Imagen que cambia -->
+  <div class="photo-wrapper" id="photoWrapper">
+    <div class="btn-left" id="prevBtn">&lt;</div>
+    <img src="" alt="Foto" id="photo" />
+    <div class="btn-right" id="nextBtn">&gt;</div>
+  </div>
+
+  <!-- Gato caminando abajo -->
+  <div class="bouncy-cat" id="catDialog">
+    <img src="https://i.imgur.com/TYda1Sv.png" alt="Gatito caminando" />
+  </div>
+
+  <!-- Gato izquierda fijo -->
+  <img src="https://www.pngarts.com/files/10/Real-Cat-PNG-Transparent-Image.png" alt="Gato esquina" class="cat-left" />
+
+  <!-- Botón gato inferior derecho -->
+  <img src="https://i.imgur.com/wNglzlm.png" alt="Botón gato" class="cat-button" id="catBtn" />
+  <div class="mensaje-fijo">aprieta al michito</div>
+
+  <!-- Contenedor de emojis para la lluvia -->
+  <div class="emoji-container" id="emoji-container"></div>
+
+<script>
+  const fotos = [
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060482/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_142012_0000_akrwni.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060487/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_141919_0000_plqopl.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060481/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_142322_0000_ni1iu1.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060480/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_143612_0000_kiihaz.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060480/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_142408_0000_oec7dw.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060480/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_142503_0000_nn43uo.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060478/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_143833_0000_f4x7sk.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060477/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_143810_0000_f09lh1.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060476/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_144152_0000_idwlcz.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060474/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_144112_0000_qrlqck.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060474/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_144131_0000_wo7wmw.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060473/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_144214_0000_aocusa.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060472/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_144256_0000_mio30x.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060470/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_144407_0000_towoub.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060470/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_144436_0000_dtee76.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060469/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_144501_0000_q2txpe.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060469/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_144725_0000_blwnsm.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060468/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_144748_0000_ngwrvh.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751060468/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_144851_0000_ve2abe.png',
+    'https://res.cloudinary.com/dgkjcq2wm/image/upload/v1751059994/Flyer_Fiesta_Discoteca_Moderno_Vintage_Original_Polaroid_Pastel_20250627_145000_0000_tcsvyf.png'
+  ];
+
+  let fotoIndex = 0;
+  const photo = document.getElementById('photo');
+  const photoWrapper = document.getElementById('photoWrapper');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const catBtn = document.getElementById('catBtn');
+  const catDialog = document.getElementById('catDialog');
+  const container = document.getElementById('emoji-container');
+  const mensajes = ["maio", "miau", "te amo", "miyo", "te adoro", "fatito", "michito", "mi bebe", "amor de mi vida", "gracias por estar en mi vida", "eres el amor de mi vida"];
+  let lluviaActiva = false;
+  let mensajesInterval, emojisInterval;
+  let animando = false;
+
+  function mostrarFoto(i) {
+    if(animando) return; // bloquea mientras animación shake esté activa
+    animando = true;
+
+    // Quitar glow mientras carga nueva imagen
+    prevBtn.classList.remove('glow');
+    nextBtn.classList.remove('glow');
+
+    photo.style.opacity = 0;
+    const nueva = new Image();
+    nueva.onload = () => {
+      photo.src = nueva.src;
+      photo.style.opacity = 1;
+
+      // Agregar efecto sacudida rápido
+      photo.classList.add('shake');
+      setTimeout(() => {
+        photo.classList.remove('shake');
+        animando = false;
+
+        // Reactivar glow
+        prevBtn.classList.add('glow');
+        nextBtn.classList.add('glow');
+      }, 1000); // duración shake 1s
+    };
+    nueva.src = fotos[i];
+  }
+
+  prevBtn.addEventListener('click', () => {
+    if(animando) return;
+    fotoIndex = (fotoIndex - 1 + fotos.length) % fotos.length;
+    mostrarFoto(fotoIndex);
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if(animando) return;
+    fotoIndex = (fotoIndex + 1) % fotos.length;
+    mostrarFoto(fotoIndex);
+  });
+
+  catBtn.addEventListener('click', () => {
+    if (lluviaActiva) return;
+    lluviaActiva = true;
+
+    // Reproducir sonidos
+    const meowAudio = new Audio("https://res.cloudinary.com/dgkjcq2wm/video/upload/v1751064194/MEOW_SOUND_yjtmlb.mp3");
+    const musicAudio = new Audio("https://res.cloudinary.com/dgkjcq2wm/video/upload/v1751064245/City_Of_Stars_Humming_-yt.savetube.me_fspazd.mp3");
+    meowAudio.play();
+    musicAudio.volume = 0;
+    musicAudio.loop = true;
+    musicAudio.play();
+    let vol = 0;
+    const fadeIn = setInterval(() => {
+      if (vol < 1) {
+        vol += 0.02;
+        musicAudio.volume = Math.min(vol, 1);
+      } else {
+        clearInterval(fadeIn);
+      }
+    }, 200);
+
+    // Explosión
+    const boom = document.createElement('div');
+    boom.classList.add('explosion');
+    document.body.appendChild(boom);
+
+    const boomEmojis = document.createElement('div');
+    boomEmojis.classList.add('explosion-emojis');
+    boomEmojis.textContent = "⭐🐱💖";
+    document.body.appendChild(boomEmojis);
+
+    setTimeout(() => {
+      boom.remove();
+      boomEmojis.remove();
+      document.querySelector('.mensaje-fijo').style.display = 'none';
+
+      // Mostrar foto + botones
+      photoWrapper.style.display = 'flex';
+
+      // Mostrar gato caminando
+      catDialog.style.display = 'block';
+
+      // Mostrar primera foto
+      mostrarFoto(fotoIndex);
+
+      // Iniciar lluvia emojis
+      emojisInterval = setInterval(() => {
+        const emojiEl = document.createElement('div');
+        emojiEl.classList.add('emoji');
+        emojiEl.textContent = ["⭐", "🐱", "💖"][Math.floor(Math.random() * 3)];
+        emojiEl.style.left = Math.random() * window.innerWidth + 'px';
+        emojiEl.style.top = '-50px';
+
+        emojiEl.animate([
+          { transform: 'translateY(0)' },
+          { transform: `translateY(${window.innerHeight + 50}px)` }
+        ], {
+          duration: 4000 + Math.random() * 4000,
+          iterations: 1,
+          easing: 'linear'
+        });
+
+        container.appendChild(emojiEl);
+        setTimeout(() => emojiEl.remove(), 8000);
+      }, 300);
+
+      // Iniciar mensajes flotantes
+      mensajesInterval = setInterval(() => {
+        const msg = document.createElement('div');
+        msg.className = 'mensaje';
+        msg.textContent = mensajes[Math.floor(Math.random() * mensajes.length)];
+        let x, y;
+        do {
+          x = Math.random() * (window.innerWidth - 100);
+          y = Math.random() * (window.innerHeight - 100);
+        } while (y > window.innerHeight / 2 - 100 && y < window.innerHeight / 2 + 100);
+
+        msg.style.left = x + 'px';
+        msg.style.top = y + 'px';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 2000);
+      }, 1500);
+
+    }, 1000);
+  });
+</script>
+</body>
+</html>
